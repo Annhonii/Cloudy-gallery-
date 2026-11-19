@@ -83,16 +83,14 @@ class TelegramApi @Inject constructor(
                 setBody(MultiPartFormDataContent(formData {
                     append("chat_id", chatId)
                     if (caption.isNotEmpty()) append("caption", caption)
-                    appendInput(
+                    append(
                         key = "document",
+                        value = fileBytes,
                         headers = Headers.build {
                             append(HttpHeaders.ContentDisposition, "filename=\"$fileName\"")
                             append(HttpHeaders.ContentType, "application/octet-stream")
-                        },
-                        size = fileBytes.size.toLong()
-                    ) {
-                        io.ktor.utils.io.ByteReadChannel(fileBytes)
-                    }
+                        }
+                    )
                 }))
             }.body()
 
@@ -178,7 +176,7 @@ class TelegramApi @Inject constructor(
 
             val bytes: ByteArray = httpClient.get(
                 "$BASE_URL/file/bot$botToken/$filePath"
-            ).readBytes()
+            ).body()
 
             Log.d(TAG, "Downloaded ${bytes.size} bytes")
             Result.success(bytes)
