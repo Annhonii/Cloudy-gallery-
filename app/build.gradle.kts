@@ -79,6 +79,7 @@ dependencies {
     // Core
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity.compose)
+    implementation(libs.google.material)
 
     // Compose BOM
     implementation(platform(libs.androidx.compose.bom))
